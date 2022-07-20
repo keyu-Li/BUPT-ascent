@@ -2,6 +2,7 @@ build-debug/
 build-release/
 build-debug-xcode/
 build-release-xcode/
+build/
 install-debug/
 install-release/
 .DS_Store

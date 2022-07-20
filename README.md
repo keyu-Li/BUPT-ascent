@@ -57,4 +57,5 @@ Members
 =========
 - LiKeyu
 - ChenYiming
+- HuDi
 - SongQinghao

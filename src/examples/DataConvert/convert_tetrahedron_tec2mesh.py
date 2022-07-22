@@ -1,10 +1,12 @@
 import imp
 import os
 import sys
-import math
-# import numpy as np
-# import conduit
 import time
+import math
+import numpy as np
+import conduit
+import conduit.utils
+
 
 # 计算两点间的距离
 def distance(p, pi):
@@ -59,10 +61,8 @@ class c2m(object):
         self.elems_center_map = {}
         self.elems_nodes_num = 0
 
+        self.node = conduit.Node()
 
-        # self.p_uvw = vtk.vtkFloatArray()
-        # self.p_uvw.SetNumberOfComponents(3)
-        # self.p_uvw.SetName("uvw")
     
     def _init_data(self):
         self.block_name = ''
@@ -81,21 +81,20 @@ class c2m(object):
 
         self.elems_faces_map = {}
         self.elems_nodes_map = {}
-        self.elems
 
         self.nodes_neigh_map = {}
         self.elems_center_map = {}
         self.elems_nodes_num = 0
         self.elems_node_list = []
+        
+        self.node.reset()
+        # self.node['state/domain'] = 0
+        # self.node['state/cycle'] = 0
+        self.node['coordsets/coords/type'] = 'explicit'
 
-
-
-        # self.p_uvw = vtk.vtkFloatArray()
-        # self.p_uvw.SetNumberOfComponents(3)
-        # self.p_uvw.SetName("uvw")
-        # self.p_uvw.SetNumberOfTuples(0)
     
     def convert_to_mesh(self, file_path, dat_dim=2):
+        self._init_data()
         print("Reading " + file_path + " ...")
         self.data_dim = dat_dim
         with open(file_path, encoding="utf-8") as f:
@@ -110,6 +109,7 @@ class c2m(object):
                 elif temp_data[0].upper() == 'VARIABLES':
                     while True:
                         name = line.strip().split('\"')[-2]
+                        # print(name)
                         self.var_name.append(name)
                         line = f.readline()
                         temp_data = line.strip().split(' ')
@@ -140,27 +140,51 @@ class c2m(object):
                     # 初始化self.variables
                     for i in range(len(self.var_name)):
                         self.variables.append([])
+                    print(len(self.variables))
                     while(count < self.nodes_num):
+                        count += 1
                         line = f.readline()
                         datas = line.strip().split(' ')
                         if len(datas) != len(self.var_name):
-                            raise("数据长度{} 对不上 变量数量 {}".format(len(datas), len(self.var_name)))
-                        for data in datas:
-                            self.variables[i].append(float(data))
+                            raise("数据长度{} 对不上 变量数量 {}, {}".format(len(datas), len(self.var_name), line))
+                        for index in range(len(self.var_name)):
+                            self.variables[index].append(float(datas[index]))
                     print("Read elems")
                     count = 0
                     while(count < self.elems_num):
+                        count += 1
                         line = f.readline()
                         datas = line.strip().split(' ')
                         if len(datas) != 4:
                             raise("数据不是4面体？")
-                        self.elems_node_list.append(datas)
+                        for data in datas:
+                            self.elems_node_list.append(int(data))
                 else:
                     end_time = time.time()
                     print("--------END--------, time is {}".format(end_time-time_start))
+                    break
+
 
 if __name__ == '__main__':
     tester = c2m()
-    tester.convert_to_mesh('/home/lighthouse/code/BUPT-ascent/flowfield.dat')
+    tester.convert_to_mesh('./flowfield.dat')
+    print("self.var_name = {}".format(tester.var_name))
+    print("self.nodes_num is {} and len(self.variables[0]) is {}".format(tester.nodes_num, len(tester.variables[0])))
+    tester.node['coordsets/coords/values/x'] = tester.variables[0]
+    tester.node['coordsets/coords/values/y'] = tester.variables[1]
+    tester.node['coordsets/coords/values/z'] = tester.variables[2]
+
+    tester.node['topologies/mesh/type'] = "unstructured"
+    tester.node['topologies/mesh/coordset'] = "coords"
+    tester.node['topologies/mesh/elements/shape'] = "tet"
+    tester.node['topologies/mesh/elements/connectivity'] = tester.elems_node_list
+    for i in range(3, len(tester.var_name)):
+        tester.node['fields/{}/association'.format(tester.var_name[i])] = 'vertex'
+        tester.node['fields/{}/topology'.format(tester.var_name[i])] = 'mesh'
+        tester.node['fields/{}/volume_dependent'.format(tester.var_name[i])] = 'false'
+        tester.node['fields/{}/values'.format(tester.var_name[i])] = tester.variables[i]
+    print(tester.node)
+    conduit.relay.io.save(tester.node, "tet.yaml")
+
 
                     

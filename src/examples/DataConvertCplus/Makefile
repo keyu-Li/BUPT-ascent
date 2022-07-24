@@ -21,7 +21,7 @@
 ###############################################################################
 
 # ASCENT_DIR ?= ../../../../../
-ASCENT_DIR ?=/home/sqh/spack/opt/spack/linux-ubuntu18.04-skylake/gcc-7.5.0/ascent-0.8.0-fgjyh5w3s47yfih3qbetau7dwmlm2mtt/
+ASCENT_DIR ?=../../../../../
 # See $(ASCENT_DIR)/share/ascent/ascent_config.mk for detailed linking info
 include $(ASCENT_DIR)/share/ascent/ascent_config.mk
 

@@ -1,0 +1,25 @@
+coordsets: 
+  coords: 
+    type: "explicit"
+    values:
+      x: [0.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0]
+      y: [0.0, 0.0, 10.0, 0.0, 0.0, -10.0, 0.0]
+      z: [0.0, 0.0, 0.0, 10.0, 0.0, 0.0, -10.0]
+topologies: 
+  mesh: 
+    type: "unstructured"
+    coordset: "coords"
+    elements: 
+      shape: "tet"
+      connectivity: [0,1,2,3,0,4,5,6]
+fields: 
+  field_1: 
+    association: "element"
+    topology: "mesh"
+    volume_dependent: "false"
+    values: [0.0, 10.0]
+  field_2: 
+    association: "vertex"
+    topology: "mesh"
+    volume_dependent: "false"
+    values: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]

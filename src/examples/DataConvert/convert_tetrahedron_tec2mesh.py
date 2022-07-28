@@ -3,34 +3,11 @@ import os
 import sys
 import time
 import math
-import numpy as np
+from mpi4py import MPI
 import conduit
-import conduit.utils
+import conduit.relay as relay
+import conduit.relay.mpi
 
-
-# 计算两点间的距离
-def distance(p, pi):
-    dis = (p[0] - pi[0]) * (p[0] - pi[0]) + (p[1] - pi[1]) * (p[1] - pi[1]) + (p[2] - pi[2]) * (p[2] - pi[2])
-    m_result = math.sqrt(dis)
-    return m_result
-
-def interpolation(p0, p_lst, v_lst):
-    sum0 = 0
-    sum1 = 0
-    p_dist = []
-    # 遍历获取该点距离所有采样点的距离
-    cnt = 0
-    for point in p_lst:
-        if p0[0] == point[0] and p0[1] == point[1] and p0[2] == point[2]:
-            return v_lst[cnt]
-        p_dist.append( distance(p0, point))
-        cnt += 1
-
-    for it in range(len(p_dist)):
-        sum0 += v_lst[it] / math.pow(p_dist[it], 2)
-        sum1 += 1.0 / math.pow(p_dist[it], 2)
-
-    return sum0 / sum1
 
 class c2m(object):
     def __init__(self):
@@ -62,6 +39,7 @@ class c2m(object):
         self.elems_nodes_num = 0
 
         self.node = conduit.Node()
+        
 
     
     def _init_data(self):
@@ -88,8 +66,8 @@ class c2m(object):
         self.elems_node_list = []
         
         self.node.reset()
-        # self.node['state/domain'] = 0
-        # self.node['state/cycle'] = 0
+        self.node['state/domain'] = 0
+        self.node['state/cycle'] = 0
         self.node['coordsets/coords/type'] = 'explicit'
 
     
@@ -158,13 +136,13 @@ class c2m(object):
                         if len(datas) != 4:
                             raise("数据不是4面体？")
                         for data in datas:
-                            self.elems_node_list.append(int(data))
+                            self.elems_node_list.append(int(data)-1)
                 else:
                     end_time = time.time()
                     print("--------END--------, time is {}".format(end_time-time_start))
                     break
 
-
+        
 if __name__ == '__main__':
     tester = c2m()
     tester.convert_to_mesh('./flowfield.dat')
@@ -183,7 +161,6 @@ if __name__ == '__main__':
         tester.node['fields/{}/topology'.format(tester.var_name[i])] = 'mesh'
         tester.node['fields/{}/volume_dependent'.format(tester.var_name[i])] = 'false'
         tester.node['fields/{}/values'.format(tester.var_name[i])] = tester.variables[i]
-    print(tester.node)
     conduit.relay.io.save(tester.node, "tet.yaml")
 
 

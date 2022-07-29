@@ -1,0 +1,16 @@
+# clampingValue.yaml
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          field: "U"
+          type: "pseudocolor"
+          min_value: 200
+          max_value: 2800
+      renders:
+        r1:
+          image_name: "clampingValue"
+          camera:
+            azimuth: 180.0

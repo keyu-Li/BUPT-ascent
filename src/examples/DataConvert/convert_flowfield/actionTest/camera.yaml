@@ -1,0 +1,24 @@
+# camera.yaml
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          type: "pseudocolor"
+          field: "U"
+      renders:
+        r1:
+          image_name: "camera"
+          camera:
+            azimuth: 0
+            # look_at: [0, 0, 0]
+            # position: [0.1, 0.1, 0.1]
+            # up: [0.1, 0.1, 0.1]
+            # fov: 100
+            # xpan: 0.5
+            # ypan: 0.5
+            # elevation: 90
+            # zoom: 5
+            # near_plane: 0.1
+            # far_plane: 0.5

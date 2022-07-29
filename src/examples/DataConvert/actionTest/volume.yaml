@@ -1,0 +1,14 @@
+#volume.yaml
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          type: "pseudocolor"
+          field: "U"
+      renders:
+        r1:
+          image_name: "volume_plot"
+          camera:
+            azimuth: 180.0

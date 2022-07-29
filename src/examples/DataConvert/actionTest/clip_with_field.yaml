@@ -1,0 +1,28 @@
+# clip_with_field.yaml
+- 
+  action: "add_pipelines"
+  pipelines: 
+    pl1: 
+      f1: 
+        type: "clip_with_field"
+        params: 
+            invert: true
+            field: "U"
+            clip_value: 1000
+          
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          type: "pseudocolor"
+          field: "U"
+          pipeline: "pl1"
+          color_table:
+            name: "Rainbow Desaturated"
+      renders:
+        r1:
+          image_name: "clip_with_field"
+          camera:
+            azimuth: 135.0

@@ -1,0 +1,30 @@
+# - 
+#   action: "add_pipelines"
+#   pipelines: 
+#     pl1: 
+#       f1: 
+#         type: "contour"
+#         params: 
+#           field: "U"
+#           levels: 5
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          type: "pseudocolor"
+          field: "U"
+          points:
+            radius: 1.f
+      image_prefix: "./tet_contour"
+# - 
+#   action: "add_scenes"
+#   scenes: 
+#     s1: 
+#       plots: 
+#         p1: 
+#           type: "pseudocolor"
+#           field: "W"
+#           pipeline: "pl1"
+#       image_prefix: "./tet_contour"

@@ -1,0 +1,28 @@
+# iso_volume.yaml
+- 
+  action: "add_pipelines"
+  pipelines: 
+    pl1: 
+      f1: 
+        type: "iso_volume"
+        params: 
+            field: "U"
+            min_value: 1000
+            max_value: 2000
+          
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          type: "pseudocolor"
+          field: "U"
+          pipeline: "pl1"
+          color_table:
+            name: "Rainbow Desaturated"
+      renders:
+        r1:
+          image_name: "iso_volume"
+          camera:
+            azimuth: 180.0

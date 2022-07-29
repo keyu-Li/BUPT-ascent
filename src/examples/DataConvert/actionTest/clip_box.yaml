@@ -1,0 +1,36 @@
+#clip_box.yaml
+- 
+  action: "add_pipelines"
+  pipelines: 
+    pl1: 
+      f1: 
+        type: "clip"
+        params: 
+            topology: "mesh"
+            invert: true
+            box:
+              min:
+                x: 0.
+                y: 0.
+                z: 0.
+              max:
+                x: 0.05
+                y: 0.04
+                z: 0.06
+          
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          type: "pseudocolor"
+          field: "U"
+          pipeline: "pl1"
+          color_table:
+            name: "Rainbow Desaturated"
+      renders:
+        r1:
+          image_name: "clip_box"
+          camera:
+            azimuth: 135.0

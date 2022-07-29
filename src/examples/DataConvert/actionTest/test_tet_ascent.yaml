@@ -1,0 +1,97 @@
+#An example of the contour filter with a multiple iso values.
+
+- 
+  action: "add_pipelines"
+  pipelines: 
+    pl1: 
+      f1: 
+        type: "contour"
+        params: 
+          field: "U"
+          levels: 3
+          # iso_values: [-0.4, 0.2, 0.4]
+          # iso_values: [200, 500, 1000]
+          # iso_values: 2000
+          # x_offset: 1.0
+          # y_offset: 0.0
+          # z_offset: 1.0
+
+
+# - 
+#   action: "add_pipelines"
+#   pipelines: 
+#     pl2: 
+#       f2: 
+#         type: "clip"
+#         params: 
+#           topology: "mesh"
+#           plane:
+#             point:
+#               x: 0.
+#               y: 0.
+#               z: 0.03
+#             normal:
+#               x: 0.
+#               y: 0.
+#               z: 1.0
+
+# - 
+#   action: "add_pipelines"
+#   pipelines: 
+#     pl3: 
+#       f3: 
+#         type: "threshold"
+#         params: 
+#           field: "U"
+#           min_value: 1000.0
+#           max_value: 2800.0
+          
+# - 
+#   action: "add_scenes"
+#   scenes: 
+#     s1: 
+#       plots: 
+#         p1: 
+#           type: "pseudocolor"
+#           field: "U"
+#           pipeline: "pl1"
+#           #points:
+#             #radius: 1.0f
+#       # renders:
+#       #   r1:
+#       #     image_name: "out_scene_ex3_view1"
+#       #     camera:
+#       #       # look_at: [1.0, 1.0, 1.0]
+#       #       # position: [0.0, 25.0, 15.0]
+#       #       # up: [0.0, -1.0, 0.0]
+#       #       # xpan: 1.0
+#       #       # ypan: 1.0
+#       #       # elevation: 10.0
+#       #       azimuth: 15.0
+#       image_prefix: "./tet_contour"
+
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          type: "pseudocolor"
+          field: "U"
+          pipeline: "pl1"
+          color_table:
+            name: "Rainbow Desaturated"
+          min_value: 200.0
+          max_value: 2800.0
+      renders:
+        r1:
+          image_name: "out_scene_ex3_view1"
+          camera:
+            # look_at: [1.0, 1.0, 1.0]
+            # position: [0.0, 25.0, 15.0]
+            # up: [0.0, -1.0, 0.0]
+            # xpan: 1.0
+            # ypan: 1.0
+            # elevation: 10.0
+            azimuth: 180.0
+

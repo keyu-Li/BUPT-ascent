@@ -21,3 +21,4 @@ spack-libs
 spack.lock
 AZEMU-LAUNCH-*.sh
 AZEMU-SCRIPT-*.sh
+.vscode/

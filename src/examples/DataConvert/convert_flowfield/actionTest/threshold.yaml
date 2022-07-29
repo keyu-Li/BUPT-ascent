@@ -1,0 +1,28 @@
+#threshold.yaml
+- 
+  action: "add_pipelines"
+  pipelines: 
+    pl1: 
+      f1: 
+        type: "threshold"
+        params: 
+          field: "U"
+          min_value: 1000.0
+          max_value: 2800.0
+          
+- 
+  action: "add_scenes"
+  scenes: 
+    s1: 
+      plots: 
+        p1: 
+          type: "pseudocolor"
+          field: "U"
+          pipeline: "pl1"
+          color_table:
+            name: "Rainbow Desaturated"
+      renders:
+        r1:
+          image_name: "threshold"
+          camera:
+            azimuth: 180.0

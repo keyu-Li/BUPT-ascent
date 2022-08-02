@@ -1,0 +1,39 @@
+###############################################################################
+# Copyright (c) Lawrence Livermore National Security, LLC and other Ascent
+# Project developers. See top-level LICENSE AND COPYRIGHT files for dates and
+# other details. No copyright assignment is required to contribute to Ascent.
+###############################################################################
+
+###############################################################################
+#
+# Makefile for CPP Ascent examples.
+#
+# To build all examples:
+#  env ASCENT_DIR={ascent install path} make
+#
+# From within an ascent install:
+#  make
+#
+# Which corresponds to:
+#
+#  make ASCENT_DIR=../../../../..
+#
+###############################################################################
+
+ASCENT_DIR ?= /home/wangxin/ascent_all/ascent_git/ascent/install
+CONDUIT_DIR ?= /home/wangxin/ascent_all/conduit/install
+
+# See $(ASCENT_DIR)/share/ascent/ascent_config.mk for detailed linking info
+include $(ASCENT_DIR)/share/ascent/ascent_config.mk
+include $(CONDUIT_DIR)/share/conduit/conduit_config.mk
+
+CXX_FLAGS = -std=c++11
+INC_FLAGS = $(ASCENT_INCLUDE_FLAGS) $(CONDUIT_INCLUDE_FLAGS)
+LNK_FLAGS = $(ASCENT_LINK_RPATH) $(ASCENT_LIB_FLAGS) $(CONDUIT_LINK_RPATH) $(CONDUIT_LIB_FLAGS)
+
+# read_data_split (1)
+read_data_split:
+	$(CXX) $(CXX_FLAGS) $(INC_FLAGS) read_data_split.cpp $(LNK_FLAGS) -o read_data_split
+
+clean:
+	rm -f read_data_split
